@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block title %}Book {{ provider.user.username }} - SewaSaathi{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <div class="ss-card p-4 p-md-5">
+                <span class="ss-eyebrow" style="color: var(--ss-terracotta-dark);">Booking Request</span>
+                <h2 class="mb-1">Book {{ provider.user.username }}</h2>
+                <p style="color: var(--ss-ink-soft);" class="mb-4">{{ provider.category.name }} &middot; Rs. {{ provider.hourly_rate|default:"—" }}</p>
+
+                <form method="post">
+                    {% csrf_token %}
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="ss-label">Preferred Date</label>
+                            {{ form.preferred_date }}
+                            {% if form.preferred_date.errors %}<div class="ss-field-error">{{ form.preferred_date.errors|striptags }}</div>{% endif %}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="ss-label">Time of Day</label>
+                            {{ form.preferred_time_slot }}
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="ss-label">Service Address</label>
+                        {{ form.address }}
+                        {% if form.address.errors %}<div class="ss-field-error">{{ form.address.errors|striptags }}</div>{% endif %}
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="ss-label">Notes (optional)</label>
+                        {{ form.notes }}
+                    </div>
+
+                    <button type="submit" class="btn btn-ss-primary w-100">Send Booking Request</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -36,9 +36,9 @@
                 </div>
 
                 {% if user.is_authenticated and user.role == 'CUSTOMER' %}
-                    <button class="btn btn-ss-primary w-100 mt-3" disabled>
-                        Book This Provider (coming soon)
-                    </button>
+                    <a href="{% url 'create_booking' provider.pk %}" class="btn btn-ss-primary w-100 mt-3 text-center d-block">
+                        Book This Provider
+                    </a>
                 {% elif not user.is_authenticated %}
                     <a href="{% url 'login' %}" class="btn btn-ss-outline w-100 mt-3">Login to Book</a>
                 {% endif %}

@@ -26,17 +26,26 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navMenu">
-                <ul class="navbar-nav ms-auto align-items-lg-center">
+                <ul class="navbar-nav ms-auto align-items-lg-center flex-wrap justify-content-end">
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'browse_providers' %}">Browse Providers</a>
                     </li>
                     {% if user.is_authenticated %}
-                        <li class="nav-item">
-                            <span class="nav-link">
+                        {% if user.role == 'CUSTOMER' %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'customer_bookings' %}">My Bookings</a>
+                            </li>
+                        {% elif user.role == 'PROVIDER' %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'provider_bookings' %}">Incoming Bookings</a>
+                            </li>
+                        {% endif %}
+                        <li class="nav-item d-flex align-items-center">
+                            <span class="nav-link mb-0 pe-2">
                                 {{ user.username }}<span class="ss-role-chip">{{ user.get_role_display }}</span>
                             </span>
                         </li>
-                        <li class="nav-item ms-lg-2">
+                        <li class="nav-item">
                             <form method="post" action="{% url 'logout' %}" class="d-inline">
                                 {% csrf_token %}
                                 <button type="submit" class="ss-btn-ghost-light">Logout</button>

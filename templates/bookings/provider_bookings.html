@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block title %}Incoming Bookings - SewaSaathi{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <h2 class="mb-4">Incoming Bookings</h2>
+
+    {% if bookings %}
+        {% for booking in bookings %}
+            <div class="ss-card ss-card-edge p-4 mb-3">
+                <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+                    <div>
+                        <h5 class="mb-1">{{ booking.customer.username }}</h5>
+                        <p class="ss-mono mb-1" style="font-size: 0.85rem; color: var(--ss-ink-soft);">
+                            {{ booking.preferred_date }} &middot; {{ booking.get_preferred_time_slot_display }}
+                        </p>
+                        <p class="mb-1" style="font-size: 0.9rem;">{{ booking.address }}</p>
+                        {% if booking.notes %}<p style="color: var(--ss-ink-soft); font-size: 0.88rem;">"{{ booking.notes }}"</p>{% endif %}
+                    </div>
+                    <div class="text-end">
+                        <span class="ss-role-chip mb-2 d-inline-block" style="background: var(--ss-paper-sunken); color: var(--ss-ink-soft); border-color: var(--ss-line);">
+                            {{ booking.get_status_display }}
+                        </span>
+                        <div class="d-flex gap-2 justify-content-end flex-wrap">
+                            {% if booking.status == 'PENDING' %}
+                                <form method="post" action="{% url 'update_booking_status' booking.pk 'ACCEPTED' %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-ss-primary" style="padding: 0.3rem 0.9rem; font-size: 0.82rem;">Accept</button>
+                                </form>
+                                <form method="post" action="{% url 'update_booking_status' booking.pk 'REJECTED' %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-ss-outline" style="padding: 0.3rem 0.9rem; font-size: 0.82rem;">Reject</button>
+                                </form>
+                            {% elif booking.status == 'ACCEPTED' %}
+                                <form method="post" action="{% url 'update_booking_status' booking.pk 'IN_PROGRESS' %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-ss-primary" style="padding: 0.3rem 0.9rem; font-size: 0.82rem;">Start Job</button>
+                                </form>
+                            {% elif booking.status == 'IN_PROGRESS' %}
+                                <form method="post" action="{% url 'update_booking_status' booking.pk 'COMPLETED' %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-ss-primary" style="padding: 0.3rem 0.9rem; font-size: 0.82rem;">Mark Completed</button>
+                                </form>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p style="color: var(--ss-ink-soft);">No bookings yet.</p>
+    {% endif %}
+</div>
+{% endblock %}
