@@ -1,0 +1,83 @@
+/* ==========================================================================
+   SewaSaathi — Django Admin Theme Override (v2, contrast-fixed)
+   ========================================================================== */
+
+:root, html[data-theme="light"] {
+  --primary: #C2541C;
+  --secondary: #1C1B19;
+  --accent: #5B7553;
+  --primary-fg: #FAF7F2;
+
+  --header-color: #FAF7F2;
+  --header-branding-color: #FAF7F2;
+  --header-bg: #1C1B19;
+  --header-link-color: #FAF7F2;
+
+  --breadcrumbs-fg: rgba(250,247,242,0.7);
+  --breadcrumbs-link-fg: #FAF7F2;
+  --breadcrumbs-bg: #2A2826;
+
+  --link-fg: #9C4116;
+  --link-hover-color: #C2541C;
+  --link-selected-fg: #C2541C;
+
+  --button-bg: #C2541C;
+  --button-fg: #FAF7F2;
+  --button-hover-bg: #9C4116;
+  --default-button-bg: #1C1B19;
+  --default-button-hover-bg: #2A2826;
+
+  --object-tools-bg: #C2541C;
+  --object-tools-hover-bg: #9C4116;
+
+  --font-family-primary: 'Inter', -apple-system, sans-serif;
+}
+
+.module h2,
+.module caption,
+.inline-group h2,
+.module h2 a,
+.module caption a {
+  background: #1C1B19 !important;
+  color: #FAF7F2 !important;
+}
+
+#header {
+  background: #1C1B19;
+  border-bottom: 3px solid #C2541C;
+}
+
+#header #branding h1,
+#header #branding h1 a {
+  color: #FAF7F2 !important;
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+#header #user-tools {
+  color: #FAF7F2;
+}
+#header #user-tools a {
+  color: #FAF7F2;
+  border-bottom-color: rgba(250,247,242,0.4);
+}
+
+div.breadcrumbs {
+  background: #2A2826;
+  border-bottom: 1px solid rgba(250,247,242,0.1);
+  color: rgba(250,247,242,0.7);
+}
+div.breadcrumbs a {
+  color: #FAF7F2;
+}
+
+a.button, button, input[type=submit], input[type=button], .submit-row input {
+  border-radius: 4px;
+}
+
+.object-tools a.addlink {
+  border-radius: 4px;
+  background-color: #C2541C;
+}
+.object-tools a.addlink:hover {
+  background-color: #9C4116;
+}
