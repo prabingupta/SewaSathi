@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% block title %}SewaSaathi — Trusted Local Services in Nepal{% endblock %}
+
+{% block content %}
+<section class="ss-hero py-5">
+    <div class="container py-4">
+        <div class="row align-items-center">
+            <div class="col-lg-7">
+                <span class="ss-eyebrow">Verified · Local · Trusted</span>
+                <h1 class="display-4 fw-bold mb-3" style="color: var(--ss-paper);">
+                    Find a service<br>professional you can trust.
+                </h1>
+                <p class="lead mb-4">
+                    SewaSaathi connects you with verified electricians, plumbers, painters,
+                    tutors and more — across Nepal, booked in minutes.
+                </p>
+
+                {% if user.is_authenticated %}
+                    <div class="d-inline-flex align-items-center gap-2 p-3 rounded" style="background: rgba(250,247,242,0.08); border: 1px solid rgba(250,247,242,0.18);">
+                        <span class="ss-stamp">Logged in</span>
+                        <span style="color: var(--ss-paper);">{{ user.username }} &middot; {{ user.get_role_display }}</span>
+                    </div>
+                {% else %}
+                    <a href="{% url 'register' %}" class="btn btn-ss-primary btn-lg me-2">Get Started</a>
+                    <a href="{% url 'login' %}" class="ss-btn-ghost-light d-inline-flex align-items-center px-4">I have an account</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="container py-5">
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="ss-card ss-card-edge p-4 h-100">
+                <span class="ss-mono" style="color: var(--ss-terracotta); font-size: 0.8rem;">01</span>
+                <h5 class="mt-2">Verified Providers</h5>
+                <p class="ss-ink-soft mb-0" style="color: var(--ss-ink-soft);">
+                    Every professional is screened — citizenship, license, and skill checks before they go live.
+                </p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="ss-card ss-card-edge p-4 h-100">
+                <span class="ss-mono" style="color: var(--ss-terracotta); font-size: 0.8rem;">02</span>
+                <h5 class="mt-2">Transparent Pricing</h5>
+                <p style="color: var(--ss-ink-soft);">
+                    See rates upfront. No surprise call-out charges, no bargaining at the door.
+                </p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="ss-card ss-card-edge p-4 h-100">
+                <span class="ss-mono" style="color: var(--ss-terracotta); font-size: 0.8rem;">03</span>
+                <h5 class="mt-2">Book in Minutes</h5>
+                <p style="color: var(--ss-ink-soft);">
+                    Search by service and location, pick a verified pro, and confirm — done.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% block title %}Register - SewaSaathi{% endblock %}
+
+{% block content %}
+<div class="ss-auth-wrap">
+    <div class="ss-auth-card" style="max-width: 540px;">
+        <div class="ss-card">
+            <span class="ss-eyebrow text-center d-block mb-2" style="color: var(--ss-terracotta-dark);">Join SewaSaathi</span>
+            <h2 class="text-center mb-4">Create an account</h2>
+
+            <form method="post">
+                {% csrf_token %}
+
+                <div class="mb-3">
+                    <label class="ss-label">Username</label>
+                    {{ form.username }}
+                    {% if form.username.errors %}
+                        <div class="ss-field-error">{{ form.username.errors|striptags }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="mb-3">
+                    <label class="ss-label">Email</label>
+                    {{ form.email }}
+                    {% if form.email.errors %}
+                        <div class="ss-field-error">{{ form.email.errors|striptags }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="mb-3">
+                    <label class="ss-label">I am a...</label>
+                    {{ form.role }}
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="ss-label">Phone Number</label>
+                        {{ form.phone }}
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="ss-label">Address</label>
+                        {{ form.address }}
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="ss-label">Password</label>
+                    {{ form.password1 }}
+                    {% if form.password1.errors %}
+                        <div class="ss-field-error">{{ form.password1.errors|striptags }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="mb-3">
+                    <label class="ss-label">Confirm Password</label>
+                    {{ form.password2 }}
+                    {% if form.password2.errors %}
+                        <div class="ss-field-error">{{ form.password2.errors|striptags }}</div>
+                    {% endif %}
+                </div>
+
+                <button type="submit" class="btn btn-ss-primary w-100 mt-2">Register</button>
+            </form>
+
+            <div class="ss-divider-label">Already have an account?</div>
+            <a href="{% url 'login' %}" class="btn btn-ss-outline w-100">Login instead</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
