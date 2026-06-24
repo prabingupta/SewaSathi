@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block title %}{{ provider.user.username }} - SewaSaathi{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <a href="{% url 'browse_providers' %}" class="ss-mono" style="font-size: 0.85rem;">&larr; Back to Browse</a>
+
+    <div class="row justify-content-center mt-3">
+        <div class="col-lg-8">
+            <div class="ss-card ss-card-edge p-4 p-md-5">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <div>
+                        <span class="ss-eyebrow" style="color: var(--ss-terracotta-dark);">{{ provider.category.name }}</span>
+                        <h2 class="mb-0">{{ provider.user.username }}</h2>
+                    </div>
+                    <span class="ss-stamp">Verified</span>
+                </div>
+
+                <p style="color: var(--ss-ink-soft);" class="mt-3">
+                    {{ provider.bio|default:"This provider hasn't added a bio yet." }}
+                </p>
+
+                <div class="row mt-4 ss-mono" style="font-size: 0.9rem;">
+                    <div class="col-6 col-md-4 mb-3">
+                        <div style="color: var(--ss-ink-soft); font-size: 0.75rem;">EXPERIENCE</div>
+                        <div class="fw-bold">{{ provider.experience_years }} yrs</div>
+                    </div>
+                    <div class="col-6 col-md-4 mb-3">
+                        <div style="color: var(--ss-ink-soft); font-size: 0.75rem;">RATE</div>
+                        <div class="fw-bold">{% if provider.hourly_rate %}Rs. {{ provider.hourly_rate }}{% else %}Contact for quote{% endif %}</div>
+                    </div>
+                    <div class="col-6 col-md-4 mb-3">
+                        <div style="color: var(--ss-ink-soft); font-size: 0.75rem;">SERVICE AREA</div>
+                        <div class="fw-bold">{{ provider.service_area|default:"Not specified" }}</div>
+                    </div>
+                </div>
+
+                {% if user.is_authenticated and user.role == 'CUSTOMER' %}
+                    <button class="btn btn-ss-primary w-100 mt-3" disabled>
+                        Book This Provider (coming soon)
+                    </button>
+                {% elif not user.is_authenticated %}
+                    <a href="{% url 'login' %}" class="btn btn-ss-outline w-100 mt-3">Login to Book</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

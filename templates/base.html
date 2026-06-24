@@ -27,6 +27,9 @@
             </button>
             <div class="collapse navbar-collapse" id="navMenu">
                 <ul class="navbar-nav ms-auto align-items-lg-center">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'browse_providers' %}">Browse Providers</a>
+                    </li>
                     {% if user.is_authenticated %}
                         <li class="nav-item">
                             <span class="nav-link">

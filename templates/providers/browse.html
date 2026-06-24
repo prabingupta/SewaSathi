@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% block title %}Browse Providers - SewaSaathi{% endblock %}
+
+{% block content %}
+<section class="ss-hero py-4">
+    <div class="container py-3">
+        <span class="ss-eyebrow">Find Help</span>
+        <h1 class="mb-3" style="color: var(--ss-paper);">Browse Verified Providers</h1>
+
+        <form method="get" class="row g-2">
+            <div class="col-md-5">
+                <input
+                    type="text" name="q" value="{{ query }}"
+                    class="ss-form-control"
+                    placeholder="Search by name, skill, or area...">
+            </div>
+            <div class="col-md-4">
+                <select name="category" class="ss-form-control">
+                    <option value="">All Categories</option>
+                    {% for cat in categories %}
+                        <option value="{{ cat.slug }}" {% if cat.slug == selected_category %}selected{% endif %}>
+                            {{ cat.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-3">
+                <button type="submit" class="btn btn-ss-primary w-100">Search</button>
+            </div>
+        </form>
+    </div>
+</section>
+
+<section class="container py-5">
+    {% if providers %}
+        <p class="ss-mono mb-4" style="color: var(--ss-ink-soft); font-size: 0.85rem;">
+            {{ providers|length }} provider{{ providers|length|pluralize }} found
+        </p>
+        <div class="row g-4">
+            {% for provider in providers %}
+                <div class="col-md-6 col-lg-4">
+                    <a href="{% url 'provider_detail' provider.pk %}" class="text-decoration-none">
+                        <div class="ss-card ss-card-edge p-4 h-100">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <span class="ss-eyebrow mb-0" style="color: var(--ss-terracotta-dark);">{{ provider.category.name }}</span>
+                                <span class="ss-stamp">Verified</span>
+                            </div>
+                            <h5 style="color: var(--ss-ink);">{{ provider.user.username }}</h5>
+                            <p style="color: var(--ss-ink-soft); font-size: 0.9rem;" class="mb-3">
+                                {{ provider.bio|default:"No description provided."|truncatewords:18 }}
+                            </p>
+                            <div class="d-flex justify-content-between ss-mono" style="font-size: 0.82rem; color: var(--ss-ink-soft);">
+                                <span>{{ provider.experience_years }} yrs exp</span>
+                                {% if provider.hourly_rate %}<span>Rs. {{ provider.hourly_rate }}</span>{% endif %}
+                                <span>{{ provider.service_area|default:"—"|truncatechars:18 }}</span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="text-center py-5">
+            <p class="ss-display" style="font-size: 1.3rem;">No providers found.</p>
+            <p style="color: var(--ss-ink-soft);">Try a different search term or category.</p>
+        </div>
+    {% endif %}
+</section>
+{% endblock %}
