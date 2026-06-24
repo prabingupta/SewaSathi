@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block title %}Complete Your Provider Profile - SewaSaathi{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-7">
+            <div class="ss-card p-4 p-md-5">
+                <span class="ss-eyebrow" style="color: var(--ss-terracotta-dark);">One last step</span>
+                <h2 class="mb-2">Complete your provider profile</h2>
+                <p style="color: var(--ss-ink-soft);" class="mb-4">
+                    Tell customers what you do. Your profile will be reviewed before it goes live.
+                </p>
+
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    <div class="mb-3">
+                        <label class="ss-label">Service Category</label>
+                        {{ form.category }}
+                        {% if form.category.errors %}<div class="ss-field-error">{{ form.category.errors|striptags }}</div>{% endif %}
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="ss-label">About You</label>
+                        {{ form.bio }}
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="ss-label">Years of Experience</label>
+                            {{ form.experience_years }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="ss-label">Hourly / Visit Rate (NPR)</label>
+                            {{ form.hourly_rate }}
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="ss-label">Service Area</label>
+                        {{ form.service_area }}
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="ss-label">Citizenship / License Document</label>
+                        {{ form.citizenship_or_license }}
+                        <div style="font-size: 0.8rem; color: var(--ss-ink-soft); margin-top: 0.3rem;">
+                            Used only for verification — not shown publicly.
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-ss-primary w-100">Submit for Review</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

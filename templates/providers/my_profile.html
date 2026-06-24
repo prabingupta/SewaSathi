@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block title %}My Provider Profile - SewaSaathi{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-7">
+            <div class="ss-card ss-card-edge p-4 p-md-5">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <div>
+                        <span class="ss-eyebrow" style="color: var(--ss-terracotta-dark);">{{ profile.category.name }}</span>
+                        <h2 class="mb-0">{{ profile.user.username }}</h2>
+                    </div>
+                    {% if profile.verification_status == 'VERIFIED' %}
+                        <span class="ss-stamp">Verified</span>
+                    {% elif profile.verification_status == 'PENDING' %}
+                        <span class="ss-stamp ss-stamp-pending">Pending Review</span>
+                    {% else %}
+                        <span class="ss-stamp ss-stamp-pending" style="border-color: var(--ss-terracotta); color: var(--ss-terracotta-dark); background: var(--ss-rust-bg);">Rejected</span>
+                    {% endif %}
+                </div>
+
+                <p style="color: var(--ss-ink-soft);">{{ profile.bio|default:"No bio added yet." }}</p>
+
+                <div class="row mt-4 ss-mono" style="font-size: 0.9rem;">
+                    <div class="col-6 col-md-3 mb-3">
+                        <div style="color: var(--ss-ink-soft); font-size: 0.75rem;">EXPERIENCE</div>
+                        <div class="fw-bold">{{ profile.experience_years }} yrs</div>
+                    </div>
+                    <div class="col-6 col-md-3 mb-3">
+                        <div style="color: var(--ss-ink-soft); font-size: 0.75rem;">RATE</div>
+                        <div class="fw-bold">{% if profile.hourly_rate %}Rs. {{ profile.hourly_rate }}{% else %}Not set{% endif %}</div>
+                    </div>
+                    <div class="col-6 col-md-3 mb-3">
+                        <div style="color: var(--ss-ink-soft); font-size: 0.75rem;">AREA</div>
+                        <div class="fw-bold">{{ profile.service_area|default:"—" }}</div>
+                    </div>
+                    <div class="col-6 col-md-3 mb-3">
+                        <div style="color: var(--ss-ink-soft); font-size: 0.75rem;">AVAILABLE</div>
+                        <div class="fw-bold">{{ profile.is_available|yesno:"Yes,No" }}</div>
+                    </div>
+                </div>
+
+                {% if profile.verification_status == 'PENDING' %}
+                    <div class="ss-alert ss-alert-info mt-3">
+                        Your profile is awaiting review by our team. This usually takes 1-2 business days.
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

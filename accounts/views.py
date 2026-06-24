@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from .forms import RegisterForm
+from .models import User
 
 
 def register_view(request):
@@ -16,6 +17,11 @@ def register_view(request):
             user = form.save()
             login(request, user)
             messages.success(request, f"Welcome to SewaSaathi, {user.username}! Your account has been created.")
+
+            if user.role == User.Role.PROVIDER:
+                messages.info(request, "Just one more step — tell us about your services.")
+                return redirect('provider_complete_profile')
+
             return redirect('home')
         else:
             messages.error(request, "Please fix the errors below.")
