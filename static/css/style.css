@@ -366,3 +366,16 @@ textarea:focus-visible,
 .ss-footer a {
   color: rgba(250, 247, 242, 0.8);
 }
+
+/* ---- Sticky footer: pushes footer to bottom on short pages ---- */
+html, body {
+  min-height: 100%;
+}
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+main {
+  flex: 1 0 auto;
+}
