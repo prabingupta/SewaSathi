@@ -25,6 +25,14 @@
                                 {% csrf_token %}
                                 <button type="submit" class="btn btn-ss-outline" style="padding: 0.3rem 0.9rem; font-size: 0.82rem;">Cancel</button>
                             </form>
+                        {% elif booking.status == 'COMPLETED' %}
+                            <div class="mt-2">
+                                {% if booking.review %}
+                                    <span class="ss-stamp">{{ booking.review.rating }}★ Reviewed</span>
+                                {% else %}
+                                    <a href="{% url 'write_review' booking.pk %}" class="btn btn-ss-primary" style="padding: 0.3rem 0.9rem; font-size: 0.82rem;">Leave a Review</a>
+                                {% endif %}
+                            </div>
                         {% endif %}
                     </div>
                 </div>

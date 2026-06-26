@@ -46,6 +46,13 @@
                                 <span class="ss-stamp">Verified</span>
                             </div>
                             <h5 style="color: var(--ss-ink);">{{ provider.user.username }}</h5>
+                            {% if provider.average_rating %}
+                                <p class="ss-mono mb-2" style="font-size: 0.85rem; color: var(--ss-amber);">
+                                    ★ {{ provider.average_rating }} <span style="color: var(--ss-ink-soft);">({{ provider.review_count }} review{{ provider.review_count|pluralize }})</span>
+                                </p>
+                            {% else %}
+                                <p class="ss-mono mb-2" style="font-size: 0.85rem; color: var(--ss-ink-soft);">No reviews yet</p>
+                            {% endif %}
                             <p style="color: var(--ss-ink-soft); font-size: 0.9rem;" class="mb-3">
                                 {{ provider.bio|default:"No description provided."|truncatewords:18 }}
                             </p>

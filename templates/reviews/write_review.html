@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}Leave a Review - SewaSaathi{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <div class="ss-card p-4 p-md-5">
+                <span class="ss-eyebrow" style="color: var(--ss-terracotta-dark);">Rate Your Experience</span>
+                <h2 class="mb-1">{{ booking.provider.user.username }}</h2>
+                <p style="color: var(--ss-ink-soft);" class="mb-4">{{ booking.provider.category.name }} &middot; {{ booking.preferred_date }}</p>
+
+                <form method="post">
+                    {% csrf_token %}
+
+                    <div class="mb-3">
+                        <label class="ss-label">Rating</label>
+                        {{ form.rating }}
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="ss-label">Comment (optional)</label>
+                        {{ form.comment }}
+                    </div>
+
+                    <button type="submit" class="btn btn-ss-primary w-100">Submit Review</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

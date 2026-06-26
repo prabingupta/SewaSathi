@@ -12,6 +12,11 @@
                     <div>
                         <span class="ss-eyebrow" style="color: var(--ss-terracotta-dark);">{{ provider.category.name }}</span>
                         <h2 class="mb-0">{{ provider.user.username }}</h2>
+                        {% if provider.average_rating %}
+                            <p class="ss-mono mt-1 mb-0" style="font-size: 0.9rem; color: var(--ss-amber);">
+                                ★ {{ provider.average_rating }} <span style="color: var(--ss-ink-soft);">({{ provider.review_count }} review{{ provider.review_count|pluralize }})</span>
+                            </p>
+                        {% endif %}
                     </div>
                     <span class="ss-stamp">Verified</span>
                 </div>

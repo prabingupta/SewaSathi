@@ -60,3 +60,15 @@ class ServiceProvider(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - {self.category.name}"
+
+    @property
+    def average_rating(self):
+        from django.db.models import Avg
+        result = self.bookings_received.filter(
+            review__isnull=False
+        ).aggregate(avg=Avg('review__rating'))
+        return round(result['avg'], 1) if result['avg'] else None
+
+    @property
+    def review_count(self):
+        return self.bookings_received.filter(review__isnull=False).count()
