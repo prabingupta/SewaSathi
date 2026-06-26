@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block title %}Notifications - SewaSaathi{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <h2 class="mb-4">Notifications</h2>
+
+    {% if notifications %}
+        {% for n in notifications %}
+            <a href="{{ n.link|default:'#' }}" class="text-decoration-none">
+                <div class="ss-card p-3 mb-2 {% if not n.is_read %}ss-card-edge{% endif %}">
+                    <p class="mb-1" style="color: var(--ss-ink);">{{ n.message }}</p>
+                    <span class="ss-mono" style="font-size: 0.78rem; color: var(--ss-ink-soft);">{{ n.created_at|timesince }} ago</span>
+                </div>
+            </a>
+        {% endfor %}
+    {% else %}
+        <p style="color: var(--ss-ink-soft);">No notifications yet.</p>
+    {% endif %}
+</div>
+{% endblock %}
