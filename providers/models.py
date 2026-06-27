@@ -74,3 +74,37 @@ class ServiceProvider(models.Model):
     @property
     def review_count(self):
         return self.bookings_received.filter(review__isnull=False).count()
+
+    def recommendation_score(self, max_price=1000):
+        """
+        Weighted scoring algorithm ranking providers by rating, review volume,
+        experience, and price. Each factor is normalized to 0-1, then combined
+        with fixed weights. This is a transparent, explainable heuristic --
+        not a trained ML model -- chosen because we don't yet have enough
+        booking volume for a real model to learn meaningful patterns from.
+
+        Weights (sum to 1.0):
+          - Rating quality:    40%
+          - Review confidence: 20% (rewards proven track record over a single lucky review)
+          - Experience:        20% (diminishing returns past ~10 years)
+          - Affordability:     20% (lower price scores higher, capped at max_price)
+        """
+        rating = self.average_rating or 0
+        rating_score = rating / 5.0
+
+        review_count = self.review_count
+        confidence_score = min(review_count / 10.0, 1.0)
+
+        experience_score = min(self.experience_years / 10.0, 1.0)
+
+        if self.hourly_rate and self.hourly_rate > 0:
+            price_score = max(0, 1 - (float(self.hourly_rate) / max_price))
+        else:
+            price_score = 0.5
+
+        return (
+            rating_score * 0.40 +
+            confidence_score * 0.20 +
+            experience_score * 0.20 +
+            price_score * 0.20
+        )

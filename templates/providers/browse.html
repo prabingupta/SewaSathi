@@ -43,7 +43,12 @@
                         <div class="ss-card ss-card-edge p-4 h-100">
                             <div class="d-flex justify-content-between align-items-start mb-2">
                                 <span class="ss-eyebrow mb-0" style="color: var(--ss-terracotta-dark);">{{ provider.category.name }}</span>
-                                <span class="ss-stamp">Verified</span>
+                                <div class="text-end">
+                                    <span class="ss-stamp d-block mb-1">Verified</span>
+                                    <span class="ss-mono" style="font-size: 0.68rem; color: var(--ss-ink-soft);" title="Match score based on rating, experience, reviews, and price">
+                                        {% widthratio provider.recommendation_score 1 100 %}% match
+                                    </span>
+                                </div>
                             </div>
                             <h5 style="color: var(--ss-ink);">{{ provider.user.username }}</h5>
                             {% if provider.average_rating %}

@@ -66,8 +66,11 @@ def browse_providers_view(request):
 
     categories = ServiceCategory.objects.filter(is_active=True)
 
+    providers_list = list(providers)
+    providers_list.sort(key=lambda p: p.recommendation_score(), reverse=True)
+
     return render(request, 'providers/browse.html', {
-        'providers': providers,
+        'providers': providers_list,
         'categories': categories,
         'selected_category': category_slug,
         'query': query,
