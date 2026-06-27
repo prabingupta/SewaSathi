@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% block title %}My Services - SewaSaathi{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <h2 class="mb-4">My Services</h2>
+
+    <div class="row">
+        <div class="col-lg-5 mb-4">
+            <div class="ss-card p-4">
+                <h6 class="ss-mono mb-3" style="font-size: 0.8rem; color: var(--ss-ink-soft); text-transform: uppercase;">Add a Service</h6>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="ss-label">Service Name</label>
+                        {{ form.name }}
+                        {% if form.name.errors %}<div class="ss-field-error">{{ form.name.errors|striptags }}</div>{% endif %}
+                    </div>
+                    <div class="mb-3">
+                        <label class="ss-label">Description</label>
+                        {{ form.description }}
+                    </div>
+                    <div class="mb-3">
+                        <label class="ss-label">Price (Rs.)</label>
+                        {{ form.price }}
+                        {% if form.price.errors %}<div class="ss-field-error">{{ form.price.errors|striptags }}</div>{% endif %}
+                    </div>
+                    <button type="submit" class="btn btn-ss-primary w-100">Add Service</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="col-lg-7">
+            {% if services %}
+                {% for service in services %}
+                    <div class="ss-card ss-card-edge p-3 mb-2 d-flex justify-content-between align-items-center">
+                        <div>
+                            <strong>{{ service.name }}</strong>
+                            {% if service.description %}<div style="font-size: 0.85rem; color: var(--ss-ink-soft);">{{ service.description }}</div>{% endif %}
+                        </div>
+                        <div class="d-flex align-items-center gap-3">
+                            <span class="ss-mono fw-bold">Rs. {{ service.price }}</span>
+                            <form method="post" action="{% url 'delete_service' service.pk %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-ss-outline" style="padding: 0.25rem 0.7rem; font-size: 0.78rem;">Remove</button>
+                            </form>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p style="color: var(--ss-ink-soft);">You haven't listed any services yet. Add one to let customers book specific work.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -5,8 +5,9 @@ from .models import Booking
 class BookingForm(forms.ModelForm):
     class Meta:
         model = Booking
-        fields = ['preferred_date', 'preferred_time_slot', 'address', 'notes']
+        fields = ['service', 'preferred_date', 'preferred_time_slot', 'address', 'notes']
         widgets = {
+            'service': forms.Select(attrs={'class': 'ss-form-control'}),
             'preferred_date': forms.DateInput(attrs={'class': 'ss-form-control', 'type': 'date'}),
             'preferred_time_slot': forms.Select(attrs={'class': 'ss-form-control'}),
             'address': forms.TextInput(attrs={
@@ -18,6 +19,13 @@ class BookingForm(forms.ModelForm):
                 'placeholder': 'Describe what you need help with...'
             }),
         }
+
+    def __init__(self, *args, provider=None, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['service'].required = False
+        self.fields['service'].empty_label = "General inquiry (no specific service)"
+        if provider:
+            self.fields['service'].queryset = provider.services.filter(is_active=True)
 
     def clean_preferred_date(self):
         from django.utils import timezone

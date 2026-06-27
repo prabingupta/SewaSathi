@@ -11,6 +11,7 @@
                 <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
                     <div>
                         <h5 class="mb-1">{{ booking.customer.username }}</h5>
+                        {% if booking.service %}<p class="mb-1" style="font-size: 0.88rem;">{{ booking.service.name }} &middot; Rs. {{ booking.service.price }}</p>{% endif %}
                         <p class="ss-mono mb-1" style="font-size: 0.85rem; color: var(--ss-ink-soft);">
                             {{ booking.preferred_date }} &middot; {{ booking.get_preferred_time_slot_display }}
                         </p>

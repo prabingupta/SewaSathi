@@ -20,17 +20,18 @@ def create_booking_view(request, provider_pk):
         return redirect('provider_detail', pk=provider_pk)
 
     if request.method == 'POST':
-        form = BookingForm(request.POST)
+        form = BookingForm(request.POST, provider=provider)
         if form.is_valid():
             booking = form.save(commit=False)
             booking.customer = request.user
             booking.provider = provider
             booking.save()
 
+            service_label = booking.service.name if booking.service else "a service"
             notify(
                 recipient=provider.user,
                 notification_type='BOOKING_CREATED',
-                message=f"New booking request from {request.user.username} for {booking.preferred_date}.",
+                message=f"New booking request from {request.user.username} for {service_label} on {booking.preferred_date}.",
                 link='/bookings/provider/incoming/'
             )
 
@@ -39,7 +40,7 @@ def create_booking_view(request, provider_pk):
         else:
             messages.error(request, "Please fix the errors below.")
     else:
-        form = BookingForm(initial={'address': request.user.address})
+        form = BookingForm(provider=provider, initial={'address': request.user.address})
 
     return render(request, 'bookings/create_booking.html', {
         'form': form, 'provider': provider
@@ -49,7 +50,7 @@ def create_booking_view(request, provider_pk):
 @login_required
 def customer_bookings_view(request):
     bookings = Booking.objects.filter(customer=request.user).select_related(
-        'provider__user', 'provider__category'
+        'provider__user', 'provider__category', 'service'
     )
     return render(request, 'bookings/customer_bookings.html', {'bookings': bookings})
 
@@ -82,7 +83,7 @@ def provider_bookings_view(request):
 
     bookings = Booking.objects.filter(
         provider=request.user.provider_profile
-    ).select_related('customer')
+    ).select_related('customer', 'service')
     return render(request, 'bookings/provider_bookings.html', {'bookings': bookings})
 
 

@@ -32,6 +32,12 @@ class Booking(models.Model):
         on_delete=models.CASCADE,
         related_name='bookings_received'
     )
+    service = models.ForeignKey(
+        'services.Service',
+        on_delete=models.SET_NULL,
+        null=True, blank=True,
+        related_name='bookings'
+    )
     preferred_date = models.DateField()
     preferred_time_slot = models.CharField(max_length=10, choices=TimeSlot.choices)
     address = models.CharField(max_length=255)
