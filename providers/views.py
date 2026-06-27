@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from accounts.models import User
-from .forms import ServiceProviderForm
+from .forms import ServiceProviderForm, ProviderLocationForm
 from .models import ServiceProvider
 
 
@@ -84,3 +84,23 @@ def provider_detail_view(request, pk):
         verification_status=ServiceProvider.VerificationStatus.VERIFIED
     )
     return render(request, 'providers/provider_detail.html', {'provider': provider})
+
+
+@login_required
+def set_location_view(request):
+    if not hasattr(request.user, 'provider_profile'):
+        messages.error(request, "Only service providers can set a location.")
+        return redirect('home')
+
+    profile = request.user.provider_profile
+
+    if request.method == 'POST':
+        form = ProviderLocationForm(request.POST, instance=profile)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Your location has been updated.")
+            return redirect('provider_my_profile')
+    else:
+        form = ProviderLocationForm(instance=profile)
+
+    return render(request, 'providers/set_location.html', {'form': form, 'profile': profile})

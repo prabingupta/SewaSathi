@@ -46,6 +46,10 @@
                         Your profile is awaiting review by our team. This usually takes 1-2 business days.
                     </div>
                 {% endif %}
+
+                <a href="{% url 'set_location' %}" class="btn btn-ss-outline w-100 mt-3">
+                    {% if profile.latitude %}Update{% else %}Set{% endif %} My Location
+                </a>
             </div>
         </div>
     </div>

@@ -1,6 +1,15 @@
 {% extends 'base.html' %}
 {% block title %}{{ provider.user.username }} - SewaSaathi{% endblock %}
 
+{% block extra_css %}
+{% if provider.latitude %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<style>
+  #providerMap { height: 280px; border-radius: var(--ss-radius-md); border: 1.5px solid var(--ss-line); margin-top: 1.5rem; }
+</style>
+{% endif %}
+{% endblock %}
+
 {% block content %}
 <div class="container py-5">
     <a href="{% url 'browse_providers' %}" class="ss-mono" style="font-size: 0.85rem;">&larr; Back to Browse</a>
@@ -40,6 +49,10 @@
                     </div>
                 </div>
 
+                {% if provider.latitude %}
+                    <div id="providerMap"></div>
+                {% endif %}
+
                 {% if user.is_authenticated and user.role == 'CUSTOMER' %}
                     <a href="{% url 'create_booking' provider.pk %}" class="btn btn-ss-primary w-100 mt-3 text-center d-block">
                         Book This Provider
@@ -51,4 +64,19 @@
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+{% if provider.latitude %}
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+  const map = L.map('providerMap', { scrollWheelZoom: false }).setView([{{ provider.latitude }}, {{ provider.longitude }}], 14);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors',
+    maxZoom: 19,
+  }).addTo(map);
+  L.marker([{{ provider.latitude }}, {{ provider.longitude }}]).addTo(map)
+    .bindPopup("{{ provider.user.username }} is based here");
+</script>
+{% endif %}
 {% endblock %}

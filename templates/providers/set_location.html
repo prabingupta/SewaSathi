@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% block title %}Set Your Location - SewaSaathi{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<style>
+  #locationMap { height: 420px; border-radius: var(--ss-radius-md); border: 1.5px solid var(--ss-line); }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="ss-card p-4 p-md-5">
+                <span class="ss-eyebrow" style="color: var(--ss-terracotta-dark);">Service Location</span>
+                <h2 class="mb-2">Set your location</h2>
+                <p style="color: var(--ss-ink-soft);" class="mb-4">
+                    Click anywhere on the map to drop a pin where you're based. This helps customers know how close you are.
+                </p>
+
+                <div id="locationMap" class="mb-3"></div>
+
+                <p id="coordsDisplay" class="ss-mono" style="font-size: 0.85rem; color: var(--ss-ink-soft);">
+                    {% if profile.latitude and profile.longitude %}
+                        Pin set at: {{ profile.latitude }}, {{ profile.longitude }}
+                    {% else %}
+                        No location set yet — click the map above.
+                    {% endif %}
+                </p>
+
+                <form method="post" id="locationForm">
+                    {% csrf_token %}
+                    {{ form.latitude }}
+                    {{ form.longitude }}
+                    <button type="submit" class="btn btn-ss-primary w-100 mt-2" id="saveBtn" {% if not profile.latitude %}disabled{% endif %}>
+                        Save Location
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+  const initialLat = {{ profile.latitude|default:"27.7172" }};
+  const initialLng = {{ profile.longitude|default:"85.3240" }};
+  const hasExisting = {% if profile.latitude %}true{% else %}false{% endif %};
+
+  const map = L.map('locationMap').setView([initialLat, initialLng], hasExisting ? 14 : 12);
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors',
+    maxZoom: 19,
+  }).addTo(map);
+
+  let marker = hasExisting ? L.marker([initialLat, initialLng]).addTo(map) : null;
+
+  function setPin(lat, lng) {
+    if (marker) {
+      marker.setLatLng([lat, lng]);
+    } else {
+      marker = L.marker([lat, lng]).addTo(map);
+    }
+    document.getElementById('id_latitude').value = lat.toFixed(6);
+    document.getElementById('id_longitude').value = lng.toFixed(6);
+    document.getElementById('coordsDisplay').textContent = 'Pin set at: ' + lat.toFixed(6) + ', ' + lng.toFixed(6);
+    document.getElementById('saveBtn').disabled = false;
+  }
+
+  map.on('click', function(e) {
+    setPin(e.latlng.lat, e.latlng.lng);
+  });
+</script>
+{% endblock %}

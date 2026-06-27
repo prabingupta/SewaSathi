@@ -20,3 +20,13 @@ class ServiceProviderForm(forms.ModelForm):
             'service_area': forms.TextInput(attrs={'class': 'ss-form-control', 'placeholder': 'e.g. Kathmandu, Lalitpur'}),
             'citizenship_or_license': forms.FileInput(attrs={'class': 'ss-form-control'}),
         }
+
+
+class ProviderLocationForm(forms.ModelForm):
+    class Meta:
+        model = ServiceProvider
+        fields = ['latitude', 'longitude']
+        widgets = {
+            'latitude': forms.HiddenInput(),
+            'longitude': forms.HiddenInput(),
+        }

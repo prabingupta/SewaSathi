@@ -41,6 +41,8 @@ class ServiceProvider(models.Model):
         blank=True,
         help_text="e.g. Kathmandu, Pokhara, Lalitpur"
     )
+    latitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
+    longitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
     citizenship_or_license = models.FileField(
         upload_to='provider_documents/',
         blank=True, null=True,
