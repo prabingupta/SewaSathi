@@ -147,6 +147,12 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 
 MEDIA_URL = 'media/'
+
+# eSewa UAT (test/sandbox) credentials -- publicly documented by eSewa for developers
+ESEWA_MERCHANT_CODE = 'EPAYTEST'
+ESEWA_SECRET_KEY = '8gBm/:&EnhH.1/q'
+ESEWA_FORM_URL = 'https://rc-epay.esewa.com.np/api/epay/main/v2/form'
+ESEWA_STATUS_URL = 'https://rc.esewa.com.np/api/epay/transaction/status/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 # Default primary key field type

@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block title %}Pay for Booking - SewaSaathi{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-5">
+            <div class="ss-card p-4 p-md-5 text-center">
+                <span class="ss-eyebrow" style="color: var(--ss-terracotta-dark);">Secure Payment</span>
+                <h3 class="mb-2">Redirecting to eSewa...</h3>
+                <p style="color: var(--ss-ink-soft);" class="mb-4">
+                    Booking #{{ booking.pk }} &middot; Rs. {{ amount }}
+                </p>
+                <div class="spinner-border" style="color: var(--ss-terracotta);" role="status"></div>
+                <p class="ss-mono mt-3" style="font-size: 0.8rem; color: var(--ss-ink-soft);">
+                    You'll be taken to eSewa's secure login page.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<form id="esewaForm" method="POST" action="{{ form_url }}" style="display: none;">
+    <input type="text" name="amount" value="{{ amount }}">
+    <input type="text" name="tax_amount" value="0">
+    <input type="text" name="total_amount" value="{{ amount }}">
+    <input type="text" name="transaction_uuid" value="{{ transaction_uuid }}">
+    <input type="text" name="product_code" value="{{ product_code }}">
+    <input type="text" name="product_service_charge" value="0">
+    <input type="text" name="product_delivery_charge" value="0">
+    <input type="text" name="success_url" value="{{ success_url }}">
+    <input type="text" name="failure_url" value="{{ failure_url }}">
+    <input type="text" name="signed_field_names" value="total_amount,transaction_uuid,product_code">
+    <input type="text" name="signature" value="{{ signature }}">
+</form>
+
+<script>
+  document.getElementById('esewaForm').submit();
+</script>
+{% endblock %}
