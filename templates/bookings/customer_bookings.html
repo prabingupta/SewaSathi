@@ -21,6 +21,9 @@
                         <span class="ss-role-chip" style="background: var(--ss-paper-sunken); color: var(--ss-ink-soft); border-color: var(--ss-line);">
                             {{ booking.get_status_display }}
                         </span>
+                        {% if booking.status != 'PENDING' and booking.status != 'REJECTED' %}
+                            <a href="{% url 'chat_room' booking.pk %}" class="btn btn-ss-outline d-inline-block mt-2" style="padding: 0.3rem 0.9rem; font-size: 0.82rem;">Chat</a>
+                        {% endif %}
                         {% if booking.can_be_cancelled %}
                             <form method="post" action="{% url 'cancel_booking' booking.pk %}" class="mt-2">
                                 {% csrf_token %}

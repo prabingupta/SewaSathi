@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% block title %}Chat with {{ other_party.username }} - SewaSaathi{% endblock %}
+
+{% block extra_css %}
+<style>
+  #chatBox { height: 420px; overflow-y: auto; background: var(--ss-paper-sunken); border-radius: var(--ss-radius-md); padding: 1rem; }
+  .chat-bubble { max-width: 70%; padding: 0.6rem 0.9rem; border-radius: 14px; margin-bottom: 0.6rem; font-size: 0.92rem; }
+  .chat-bubble.mine { background: var(--ss-terracotta); color: var(--ss-paper); margin-left: auto; border-bottom-right-radius: 4px; }
+  .chat-bubble.theirs { background: var(--ss-paper-raised); border: 1px solid var(--ss-line); border-bottom-left-radius: 4px; }
+  .chat-time { font-size: 0.68rem; opacity: 0.7; display: block; margin-top: 0.2rem; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-7">
+            <div class="ss-card p-4">
+                <span class="ss-eyebrow" style="color: var(--ss-terracotta-dark);">Booking #{{ booking.pk }}</span>
+                <h4 class="mb-3">Chat with {{ other_party.username }}</h4>
+
+                <div id="chatBox">
+                    {% for msg in messages_history %}
+                        <div class="chat-bubble {% if msg.sender_id == request.user.id %}mine{% else %}theirs{% endif %}" data-sender-id="{{ msg.sender_id }}">
+                            {{ msg.content }}
+                            <span class="chat-time">{{ msg.sender.username }} &middot; {{ msg.created_at|time:"g:i A" }}</span>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <form id="chatForm" class="d-flex gap-2 mt-3">
+                    <input type="text" id="chatInput" class="ss-form-control" placeholder="Type a message..." autocomplete="off">
+                    <button type="submit" class="btn btn-ss-primary">Send</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  const bookingId = {{ booking.pk }};
+  const currentUserId = {{ request.user.id }};
+  const chatBox = document.getElementById('chatBox');
+  const chatForm = document.getElementById('chatForm');
+  const chatInput = document.getElementById('chatInput');
+
+  const wsProtocol = window.location.protocol === 'https:' ? 'wss://' : 'ws://';
+  const chatSocket = new WebSocket(wsProtocol + window.location.host + '/ws/chat/' + bookingId + '/');
+
+  chatSocket.onmessage = function(e) {
+    const data = JSON.parse(e.data);
+    const isMine = data.sender_id === currentUserId;
+    const bubble = document.createElement('div');
+    bubble.className = 'chat-bubble ' + (isMine ? 'mine' : 'theirs');
+    bubble.innerHTML = escapeHtml(data.message) +
+      '<span class="chat-time">' + escapeHtml(data.sender) + ' &middot; ' + data.created_at + '</span>';
+    chatBox.appendChild(bubble);
+    chatBox.scrollTop = chatBox.scrollHeight;
+  };
+
+  chatSocket.onclose = function() {
+    console.warn('Chat connection closed.');
+  };
+
+  chatForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const message = chatInput.value.trim();
+    if (!message) return;
+    chatSocket.send(JSON.stringify({ 'message': message }));
+    chatInput.value = '';
+  });
+
+  function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+  }
+
+  chatBox.scrollTop = chatBox.scrollHeight;
+</script>
+{% endblock %}

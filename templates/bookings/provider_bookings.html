@@ -23,6 +23,9 @@
                             {{ booking.get_status_display }}
                         </span>
                         <div class="d-flex gap-2 justify-content-end flex-wrap">
+                            {% if booking.status != 'PENDING' and booking.status != 'REJECTED' %}
+                                <a href="{% url 'chat_room' booking.pk %}" class="btn btn-ss-outline" style="padding: 0.3rem 0.9rem; font-size: 0.82rem;">Chat</a>
+                            {% endif %}
                             {% if booking.status == 'PENDING' %}
                                 <form method="post" action="{% url 'update_booking_status' booking.pk 'ACCEPTED' %}">
                                     {% csrf_token %}

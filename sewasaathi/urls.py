@@ -14,6 +14,7 @@ urlpatterns = [
     path('notifications/', include('notifications.urls')),
     path('dashboard/', include('dashboard.urls')),
     path('services/', include('services.urls')),
+    path('chat/', include('chat.urls')),
 ]
 
 if settings.DEBUG:
