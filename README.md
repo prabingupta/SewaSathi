@@ -148,4 +148,4 @@ A few deliberate design decisions, useful context for reviewing the code:
 
 ## Author
 
-Final year project by Prabin Kumar Gupta.
+Prabin Kumar Gupta.
