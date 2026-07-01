@@ -1,6 +1,6 @@
 # SewaSaathi 🛠️
 
-**SewaSaathi** is an AI-powered service marketplace connecting customers in Nepal with verified local service providers — electricians, plumbers, painters, tutors, and more. Built as a final year project using Django, it implements a complete booking marketplace: registration and verification, service listings, real-time chat, reviews, notifications, and an admin analytics dashboard.
+**SewaSaathi** is an AI-powered service marketplace connecting customers in Nepal with verified local service providers — electricians, plumbers, painters, tutors, and more.It implements a complete booking marketplace: registration and verification, service listings, real-time chat, reviews, notifications, and an admin analytics dashboard.
 
 > स + Saathi = "Service Companion" — सS is the brand mark used throughout the UI.
 
