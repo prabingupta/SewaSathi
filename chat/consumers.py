@@ -44,7 +44,9 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 'message': message_text,
                 'sender': user.username,
                 'sender_id': user.id,
-                'created_at': message.created_at.strftime('%I:%M %p'),
+                'created_at': message.created_at.astimezone(
+                    __import__('zoneinfo').ZoneInfo('Asia/Kathmandu')
+                ).strftime('%I:%M %p'),
             }
         )
 
